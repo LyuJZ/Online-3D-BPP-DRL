@@ -1,6 +1,6 @@
 gym==0.14.0
 pybullet==2.5.3
-torch==1.1.0
+torch==1.13.0
 matplotlib==3.0.3
 numpy==1.17.0
 baselines==0.1.5

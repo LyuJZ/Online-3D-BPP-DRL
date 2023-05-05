@@ -1,4 +1,4 @@
-from .space import Space
+from .space import Space, Box
 import numpy as np
 import copy
 import gym
@@ -15,6 +15,8 @@ class PackingGame(gym.Env):
         self.area = int(self.bin_size[0] * self.bin_size[1])
         self.space = Space(*self.bin_size)
         self.can_rotate = enable_rotation
+        self.container = Box(*container_size, 0, 0, 0)
+        self.container.set_color('skyblue')
 
         if not test and box_creator is None:
             assert box_set is not None

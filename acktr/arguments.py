@@ -36,7 +36,7 @@ def get_args():
         '--item-seq', default='depen', help='item sequence generators (ignored when testing), depen|sample|md'
     )
     args = parser.parse_args()
-    if args.load_model[0] == 'F':
+    if args.load_model == 'F':
         args.load_model = False
     else:
         args.load_model = True

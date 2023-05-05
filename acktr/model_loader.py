@@ -16,7 +16,7 @@ class nnModel(object):
         self._model = self._load_model(url)
 
     def _load_model(self, url):
-        model_pretrained, ob_rms = torch.load(url)
+        model_pretrained, ob_rms = torch.load(url, map_location='cpu')
         observation_space = gym.spaces.Box(low=0.0, high=self.height, shape=(self.olen, ))
         action_space = gym.spaces.Discrete(self.alen)
         actor_critic = Policy(obs_shape=observation_space.shape, action_space=action_space)

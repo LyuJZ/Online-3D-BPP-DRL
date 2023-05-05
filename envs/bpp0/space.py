@@ -11,6 +11,73 @@ class Box(object):
         self.lx = lx
         self.ly = ly
         self.lz = lz
+        self.color = None
+        self.vertex = np.zeros((8, 3))
+        self.refresh()
+
+    def set_color(self,color):
+        if self.color is None:
+            self.color = color
+
+    def refresh(self):
+        self.getCorners([self.x, self.y, self.z], [self.lx, self.ly, self.lz])
+
+    def getCorners(self, size, location, quaternion=np.array([1, 0, 0, 0])):  # 找八个定点的坐标
+        for i in range(2):
+            for j in range(2):
+                for k in range(2):
+                    self.vertex[i * 4 + j * 2 + k] = np.array(
+                        [location[0] + k * size[0], location[1] + j * size[1], location[2] + i * size[2]])
+        vertex = np.array(self.vertex, np.float32)
+        return vertex.transpose()
+        
+    def plot_opaque_cube(self, ax, text, color='red', alpha = 1):
+        if self.color is not None:
+            color = self.color
+
+        self.refresh()
+        ax.text3D(self.vertex[0][0], self.vertex[0][1], self.vertex[0][2], text, fontsize=15,
+                  verticalalignment="center",
+                  horizontalalignment="center")
+
+        xx = np.array([self.lx, self.x + self.lx])
+        yy = np.array([self.ly, self.y + self.ly])
+        zz = np.array([self.lz, self.z + self.lz])
+
+        xx, yy = np.meshgrid(xx, yy)
+
+        ax.plot_surface(xx, yy, xx * 0 + self.lz, color=color, alpha=0.5)
+        ax.plot_surface(xx, yy, xx * 0 + self.lz + self.z, color=color, alpha=0.5)
+
+        yy, zz = np.meshgrid(yy, zz)
+        ax.plot_surface(yy * 0 + self.lx, yy, zz, color=color, alpha=0.5)
+        ax.plot_surface(yy * 0 + self.lx + self.x, yy, zz, color=color, alpha=0.5)
+
+        xx, zz = np.meshgrid(xx, zz)
+        ax.plot_surface(xx, zz * 0 + self.ly, zz, color=color, alpha=0.5)
+        ax.plot_surface(xx, zz * 0 + self.ly + self.y, zz, color=color, alpha=0.5)
+
+
+
+    def plot_linear_cube(self, ax, text, color='red', alpha = 1,linestyle = '-'):
+        if self.color is not None:
+            color = self.color
+        self.refresh()
+        ax.text3D(self.vertex[0][0], self.vertex[0][1], self.vertex[0][2], text, fontsize=15,
+                  verticalalignment="center",
+                  horizontalalignment="center")
+        xd = [self.vertex[0][0], self.vertex[2][0], self.vertex[3][0], self.vertex[1][0], self.vertex[0][0]]
+        yd = [self.vertex[0][1], self.vertex[2][1], self.vertex[3][1], self.vertex[1][1], self.vertex[0][1]]
+        zd = [self.vertex[0][2], self.vertex[2][2], self.vertex[3][2], self.vertex[1][2], self.vertex[0][2]]
+        xu = [self.vertex[4][0], self.vertex[6][0], self.vertex[7][0], self.vertex[5][0], self.vertex[4][0]]
+        yu = [self.vertex[4][1], self.vertex[6][1], self.vertex[7][1], self.vertex[5][1], self.vertex[4][1]]
+        zu = [self.vertex[4][2], self.vertex[6][2], self.vertex[7][2], self.vertex[5][2], self.vertex[4][2]]
+        kwargs = {'alpha': 1, 'color': color,'linestyle':linestyle}
+        ax.plot3D(xd, yd, zd, **kwargs)  # 绘制下表面
+        ax.plot3D(xu, yu, zu, **kwargs)
+        for i in range(4):
+            ax.plot3D([self.vertex[i][0], self.vertex[i + 4][0]], [self.vertex[i][1], self.vertex[i + 4][1]],
+                      [self.vertex[i][2], self.vertex[i + 4][2]], **kwargs)
 
     def standardize(self):
         return tuple([self.x, self.y, self.z, self.lx, self.ly, self.lz])
@@ -179,5 +246,7 @@ class Space(object):
             self.height = max(self.height, new_h + z)
             return True
         return False
+    
+    
 
 

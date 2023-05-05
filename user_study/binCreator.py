@@ -1,7 +1,10 @@
 from numpy.random import randint
 from copy import deepcopy
+import os
 
 def load(file_path):
+    path = os.path.abspath(os.path.dirname(__file__))
+    file_path = path + file_path
     f = open(file_path, 'r')
     all_trajs = []
     finish = False

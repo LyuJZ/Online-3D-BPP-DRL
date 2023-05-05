@@ -96,11 +96,11 @@ class MCTree(object):
         return actions_values
 
     def get_policy(self, sim_times, zeta=1):
-        start = time.clock()
+        start = time.perf_counter()
         for i in range(sim_times):
             # print('simulation',i+1)
             self.select()
-        end = time.clock()
+        end = time.perf_counter()
         p = self.play(zeta)
         print('cost time', end-start)
         print("terminated node:", self.subrt)

@@ -11,7 +11,7 @@ class PackingGame(object):
         self.can_give_up = enable_give_up
         self.next_box = None
         self.cur_observation = None
-        self.data_name = 'cut_2.txt'
+        self.data_name = '/cut_2.txt'
         if self.box_creator is None:
             self.box_creator = LoadBoxCreator(data_name = self.data_name)
 

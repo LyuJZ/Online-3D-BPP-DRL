@@ -1,0 +1,3 @@
+The traj index is:5647
+The dataset is:cut_2.txt
+4, 2, 4

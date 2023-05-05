@@ -18,6 +18,9 @@ from evaluation import evaluate
 from tensorboardX import SummaryWriter
 from unified_test import unified_test
 
+from matplotlib import pyplot as plt
+
+
 def main(args):
     # input arguments about environment
     config.container_size = args.bin_size
@@ -255,5 +258,11 @@ def train_model():
 
 if __name__ == "__main__":
     args = get_args()
+    ### for test ###
+    args.mode = 'test'
+    args.loal_model = True
+    args.data_name = 'cut_2.pt'
+    args.load_name = 'default_cut_2.pt'
+    ### for test ###
     main(args)
 
